@@ -18,6 +18,8 @@ SET_TRACK_NUMBERS = True
 SET_COVER_SOURCE = True
 SET_COVER_ART = False
 
+DOWNLOAD_COVERS = False
+
 if __name__ == "__main__":
     # Only used if SET_TRACK_NUMBERS is set to True
     track_num = 1
@@ -31,13 +33,12 @@ if __name__ == "__main__":
         data = dg.get_data()
         file_name = rename(data["title"])
         
-        # print(data, "\n")
         print(f"Downloading...{file_name}")
 
-        #print(data,"\n")
-
-        # Download cover becomes obsolete if I just render the album cover directly from the internet
-        # download_cover(data["cover_src"], data["album"])
+        # Downloads covers if desired
+        if DOWNLOAD_COVERS:
+            download_cover(data["cover_src"], data["album"])
+        
         download_song(song_url, file_name)
 
         # Writes basic info into MP3's ID3 metadata
