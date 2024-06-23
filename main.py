@@ -7,7 +7,7 @@ import eyed3
 from eyed3.id3.frames import ImageFrame
 from renamer import *
 
-#TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLvsYXqtYjMYfQ4gz7lC3UKa2DNsnlIKRM"  # Suki Waterhouse
+#TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLvsYXqtYjMYfQ4gz7lC3UKa2DNsnlIKRM"  # Suki - I Can't Let Go
 #TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=OLAK5uy_kq_gJdWJ9LUwgYzXMWeocvSyee4OqsvOQ"  # NFR
 #TEST_PLAYLIST_URL = "https://www.youtube.com/watch?v=1RKqOmSkGgM&list=PL2fTbjKYTzKcb4w0rhNC76L-MER585BJa"  # MM_Test
 #TEST_PLAYLIST_URL = "https://www.youtube.com/watch?v=6S20mJvr4vs&list=PLRwfuN7siOr7p044Iw_7jfEhGPgfVdST-"  # IGOR
