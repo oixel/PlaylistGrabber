@@ -8,11 +8,11 @@ from eyed3.id3.frames import ImageFrame
 from renamer import *
 import os
 
-#TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLvsYXqtYjMYfQ4gz7lC3UKa2DNsnlIKRM"  # Suki - I Can't Let Go
 #TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=OLAK5uy_kq_gJdWJ9LUwgYzXMWeocvSyee4OqsvOQ"  # NFR
-#TEST_PLAYLIST_URL = "https://www.youtube.com/watch?v=1RKqOmSkGgM&list=PL2fTbjKYTzKcb4w0rhNC76L-MER585BJa"  # MM_Test
-#TEST_PLAYLIST_URL = "https://www.youtube.com/watch?v=6S20mJvr4vs&list=PLRwfuN7siOr7p044Iw_7jfEhGPgfVdST-"  # IGOR
-#TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLfiMjLyNWxebu5tK9xUbPKcVeVpOwc8QI"  # CMIYGL
+
+#
+# WEIRD BUG check Dried Roses on Dragon New Warm Mountain--album title gets cut off at the end
+#
 
 # Change these constants to change what metadata is set
 SET_TRACK_NUMBERS = True
@@ -24,12 +24,19 @@ DOWNLOAD_COVERS = False
 if __name__ == "__main__":
     # Gets inputs for the playlist to download and what folder to download to
     playlist_url = input("What is your desired YouTube playlist URL? ")
-    output_folder = input("What is your output folder's name? ")
-    path = f"content/songs/{output_folder}/"
+    output_path = input("What is your output folder's name? ")
+    path = f"content/songs/"
 
-    # Checks if path exists in content folder, if not, create new folder
-    if not os.path.exists(path):
-        os.mkdir(path)
+    # Creates a list of all folders in desired path
+    folders = output_path.split('/')
+    
+    # Runs through all the folders in the desired path
+    for folder in folders:
+        # Checks if path exists in content folder, if not, create new folder
+        if not os.path.exists(f"{path}/"):
+            os.mkdir(path)
+        # Adds folder to complete output path
+        path += f"{folder}/"
 
     # Only used if SET_TRACK_NUMBERS is set to True
     track_num = 1
