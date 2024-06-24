@@ -18,7 +18,7 @@ class DataGrabber:
 
         # Uses BeautifulSoup to parse through the HTML data and convert it to a "legible" string
         bs = BS(html, "html.parser")
-        self.html = bs.prettify()[800000:]  # Everything before ~800000 does not include metadata info
+        self.html = bs.prettify()[700000:]  # Everything before ~700000 does not include metadata info
 
         # Creates an empty dictionary to fill with metadata
         self.metadata = {}
