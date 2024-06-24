@@ -10,9 +10,9 @@ def download_cover(url, song_name) -> None:
     open(path, "wb").write(image_data)
 
 # Downloads song at given url
-def download_song(url, song_name) -> None:
+def download_song(url, path, song_name) -> None:
     # Downloads an MP3 of the YouTube video audio from url to content/songs folder
     youtube = YouTube(url, use_oauth=True, allow_oauth_cache=True)
 
     stream = youtube.streams.get_audio_only()
-    stream.download("content/songs/", f"{song_name}", mp3=True)
+    stream.download(f"{path}", f"{song_name}", mp3=True)
