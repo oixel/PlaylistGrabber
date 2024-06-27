@@ -58,8 +58,13 @@ if __name__ == "__main__":
         audio = EasyID3()
         audio["title"] = f"{data["title"]}" # THIS IS WORKING??? WRITING TITLE
         audio["artist"] = f"{data["artist"]}"
+        audio["albumartist"] = f"{data["artist"]}"
         audio["album"] = f"{data["album"]}"
-        
+
+        if SET_TRACK_NUMBERS:
+            audio["tracknumber"] = f"{track_num}"
+            track_num += 1
+
         audio.save(f"{path}{file_name}.mp3")
         #audio.add_tags()
 
