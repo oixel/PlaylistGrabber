@@ -1,7 +1,7 @@
 import data_grabber as DG
 from downloader import *
 from pytube import *
-from mutagen.id3 import ID3, TIT2
+from mutagen.easyid3 import EasyID3
 from renamer import *
 import os
 
@@ -55,8 +55,11 @@ if __name__ == "__main__":
         
         download_song(song_url, path, file_name)
 
-        audio = ID3()
-        audio.add(TIT2(encoding=3, text=f"{data["title"]}"))  # THIS IS WORKING??? WRITING TITLE
+        audio = EasyID3()
+        audio["title"] = f"{data["title"]}" # THIS IS WORKING??? WRITING TITLE
+        audio["artist"] = f"{data["artist"]}"
+        audio["album"] = f"{data["album"]}"
+        
         audio.save(f"{path}{file_name}.mp3")
         #audio.add_tags()
 
