@@ -3,6 +3,8 @@ from downloader import *
 from renamer import *
 from pytube import *
 from mutagen.easyid3 import EasyID3
+from mutagen.id3 import ID3, APIC
+from io import BytesIO
 
 #TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=OLAK5uy_kq_gJdWJ9LUwgYzXMWeocvSyee4OqsvOQ"  # NFR
 
@@ -89,6 +91,27 @@ if __name__ == "__main__":
             # Saves metadata into proper MP3 file
             audio.save(f"{path}{file_name}.mp3")
 
+            # Only embeds album covers if it desired
+            if SET_COVER_ART:
+                # Reads and store byte data for album cover image from image source's URL
+                cont = requests.get(data["cover_src"]).content
+                image_bytes = BytesIO(cont).read()
+
+                # Creates an ID3 object for current song (EasyID3 does not support embedding album art)
+                id3 = ID3(f"{path}{file_name}.mp3")
+                
+                # Embeds image byte data into front cover metadata tag
+                id3["APIC"] = APIC(
+                    encoding = 3,
+                    mime = "image/jpeg",
+                    type = 3,
+                    desc = u'Cover',
+                    data = image_bytes
+                )
+
+                # Saves new image data into MP3's ID3 metadata tags
+                id3.save()
+            
             print(file_name, "downloaded and written!\n")
 
         print(f"All songs in playlist downloaded!\n------------\n")
