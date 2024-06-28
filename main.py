@@ -8,9 +8,9 @@ from io import BytesIO
 
 # Change these constants to change what metadata is set
 SET_TRACK_NUMBERS = True
-SET_COVER_SOURCE = False
 SET_COVER_ART = True
 
+# Change to true if album cover for song should be downloaded (if not already downloaded)
 DOWNLOAD_COVERS = False
 
 if __name__ == "__main__":
@@ -110,4 +110,4 @@ if __name__ == "__main__":
 
         print(f"All songs in playlist downloaded!\n------------\n")
 
-    print("ALL playlists done downloading! Enjoy :)")
+    print("ALL playlists done downloading! Enjoy :)\n")
