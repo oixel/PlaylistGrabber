@@ -6,12 +6,6 @@ from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3, APIC
 from io import BytesIO
 
-#TEST_PLAYLIST_URL = "https://www.youtube.com/playlist?list=OLAK5uy_kq_gJdWJ9LUwgYzXMWeocvSyee4OqsvOQ"  # NFR
-
-#
-# WEIRD BUG check Dried Roses on Dragon New Warm Mountain--album title gets cut off at the end
-#
-
 # Change these constants to change what metadata is set
 SET_TRACK_NUMBERS = True
 SET_COVER_SOURCE = False
