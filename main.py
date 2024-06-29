@@ -4,7 +4,9 @@ from renamer import *
 from pytube import Playlist
 from os import path
 
-# Default: True -- Writes MP3's position in playlist as track number in MP3's metadata
+# Default: True -- Writes track number in MP3's metadata
+# NOTE: Track number is representative of song's position in playlist 
+# (Change the song's position in playlist to change the track number)
 SET_TRACK_NUMBERS = True
 
 # Default: False -- Writes track number (as explained above) in filename before title (e.g. "01 Song Name.mp3")
