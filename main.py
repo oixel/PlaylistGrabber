@@ -2,6 +2,7 @@ import data_handler as DH
 from downloader import *
 from renamer import *
 from pytube import Playlist
+from os import path
 
 # Change these constants to change what metadata is set
 SET_TRACK_NUMBERS = True
@@ -66,7 +67,18 @@ if __name__ == "__main__":
             # Appends playlist url to recently created path
             playlist_paths.append((playlist_url, path))
     else:
-        url_txt = open("urls.txt", "r")
+        while True:
+            try:
+                txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
+                txt_path = "url_txts/" + txt_name + ".txt"
+                if not path.isfile(txt_path):
+                    raise
+                
+                print(f"Now downloading playlists in {txt_name}.txt!")
+                break
+            except:
+                print("Please input the name of a text file that exists in the url_texts folder.")
+        url_txt = open(txt_path, "r")
         lines = url_txt.readlines()
 
         for i in range(len(lines)):
