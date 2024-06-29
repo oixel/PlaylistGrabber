@@ -14,37 +14,66 @@ AUTO_SORT_SONGS = True
 DOWNLOAD_COVERS = False
 
 if __name__ == "__main__":
-    # Loops until a proper integer is given
     while True:
         try:
-            playlist_count = int(input("How many playlists are being downloaded? "))
+            print("How do you want to input playlist URLs?")
+            print("1 - Input each individually")
+            print("2 - Read from urls.txt")
+            choice = int(input("Choice: "))
+            print()
+
+            if choice > 2 or choice < 1:
+                raise ValueError
+            
             break
         except ValueError:
-            print("Please input an integer.")
+            print("Please input either 1 or 2.")
+    
+    # Loops until a proper integer is given
+    while True:
+        if choice == 1:
+            try:
+                playlist_count = int(input("How many playlists are being downloaded? "))
+                break
+            except ValueError:
+                print("Please input an integer.")
+        else:
+            AUTO_SORT_SONGS = True
+            break
 
     # Stores tuples of format (YouTube link, output path)
     playlist_paths = []
 
-    # Fills playlist_paths with URLs and output paths
-    for i in range(playlist_count):
-        # Gets inputs for the playlist to download and what folder to download to
-        playlist_url = input(f"What is your desired YouTube playlist URL for playlist {i + 1}? ")
+    if choice == 1:
+        # Fills playlist_paths with URLs and output paths
+        for i in range(playlist_count):
+            # Gets inputs for the playlist to download and what folder to download to
+            playlist_url = input(f"What is your desired YouTube playlist URL for playlist {i + 1}? ")
 
-        # Only asks for custom output path if auto sorting songs is turned off
-        if not AUTO_SORT_SONGS:
-            output_path = input(f"What is your output path for playlist {i + 1}? ")
-        else:
-            output_path = ""
-        
-        # Adds content/songs/ to the beginning of whatever desired path was inputted
-        path = f"content/songs/{output_path}"
+            # Only asks for custom output path if auto sorting songs is turned off
+            if not AUTO_SORT_SONGS:
+                output_path = input(f"What is your output path for playlist {i + 1}? ")
+            else:
+                output_path = ""
+            
+            # Adds content/songs/ to the beginning of whatever desired path was inputted
+            path = f"content/songs/{output_path}"
 
-        # If path does not end with slash, add one to it
-        if path[-1] != '/':
-            path += '/'
-        
-        # Appends playlist url to recently created path
-        playlist_paths.append((playlist_url, path))
+            # If path does not end with slash, add one to it
+            if path[-1] != '/':
+                path += '/'
+            
+            # Appends playlist url to recently created path
+            playlist_paths.append((playlist_url, path))
+    else:
+        url_txt = open("urls.txt", "r")
+        lines = url_txt.readlines()
+
+        for i in range(len(lines)):
+            if "#" in lines[i]:
+                continue
+
+            playlist_paths.append((lines[i], ""))
 
     # Loops through all the URL / output path pairs in list
     for pair in playlist_paths:
