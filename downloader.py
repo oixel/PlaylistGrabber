@@ -16,3 +16,7 @@ def download_song(url, path, song_name) -> None:
 
     stream = youtube.streams.get_audio_only()
     stream.download(f"{path}", f"{song_name}", mp3=True)
+
+# Returns YouTube object to access basic video information for filler metadata
+def get_song(url) -> None:
+    return YouTube(url, use_oauth=True, allow_oauth_cache=True)
