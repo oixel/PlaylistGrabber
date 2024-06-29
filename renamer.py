@@ -1,6 +1,10 @@
-def fix_ampersand(string) -> str:
+def fix_unicode(string) -> str:
     if "u0026" in string:
         string = string.replace("\\", "").replace("u0026", "&")
+    if "u003e" in string:
+        string = string.replace("\\", "").replace("u003e", ">")
+    if "u003c" in string:
+        string = string.replace("\\", "").replace("u003c", "<")
     
     return string
 
@@ -9,7 +13,7 @@ def rename(name) -> str:
 
     ALLOWED_CHAR = "!&-,()$@%#:;'\"+=_ "
 
-    name = fix_ampersand(name)
+    name = fix_unicode(name)
     
     for i in range(len(name)):
         c = name[i]
