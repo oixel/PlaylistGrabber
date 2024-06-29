@@ -7,14 +7,15 @@ from os import path
 # Default: True -- Writes MP3's position in playlist as track number in MP3's metadata
 SET_TRACK_NUMBERS = True
 
-# Default: True -- Writes track number (as explained above) in filename before title (e.g. "01 Song Name.mp3")
-SET_NUM_IN_FILENAME = True
+# Default: False -- Writes track number (as explained above) in filename before title (e.g. "01 Song Name.mp3")
+SET_NUM_IN_FILENAME = False
 
 # Default: True -- Embeds song's cover art into MP3 if available or generic filler drawing if not available
 # NOTE: to make cover art be video thumbnail instead of cat drawing, uncomment code under line 69 of data_handler.py
 SET_COVER_ART = True
 
 # Default: False -- Sorts downloaded songs into paths equal to Artist/Album/
+# NOTE: this is set to True whenever downloading playlists from a .txt file
 AUTO_SORT_SONGS = False
 
 if __name__ == "__main__":
