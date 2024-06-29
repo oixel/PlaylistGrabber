@@ -82,7 +82,7 @@ if __name__ == "__main__":
         lines = url_txt.readlines()
 
         for i in range(len(lines)):
-            if "#" in lines[i]:
+            if "https://www.youtube.com/playlist?list=" not in lines[i]:
                 continue
 
             playlist_paths.append((lines[i], ""))
@@ -120,10 +120,11 @@ if __name__ == "__main__":
             
             # Overwrites output path to Artist/Album if auto sorting is turned on
             if AUTO_SORT_SONGS:
+                path_start = f"content/songs/{data["artist"]}/"
                 if data["album"] != "":
-                    path = f"content/songs/{data["artist"]}/{data['album']}/"
-                else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder
-                    path = "content/songs/UNORGANIZED/"
+                    path = f"{path_start}{data['album']}/"
+                else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder under artist's name
+                    path = f"{path_start}UNORGANIZED/"
 
             # Downloads song using pytube
             download_song(song_url, path, file_name)
