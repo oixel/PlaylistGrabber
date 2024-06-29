@@ -4,20 +4,24 @@ from renamer import *
 from pytube import Playlist
 from os import path
 
-# Change these constants to change what metadata is set
+# Default: True -- Writes MP3's position in playlist as track number in MP3's metadata
 SET_TRACK_NUMBERS = True
+
+# Default: True -- Writes track number (as explained above) in filename before title (e.g. "01 Song Name.mp3")
 SET_NUM_IN_FILENAME = True
+
+# Default: True -- Embeds song's cover art into MP3 if available or generic filler drawing if not available
+# NOTE: to make cover art be video thumbnail instead of cat drawing, uncomment code under line 69 of data_handler.py
 SET_COVER_ART = True
 
-AUTO_SORT_SONGS = True
-
-# Change to true if album cover for song should be downloaded (if not already downloaded)
-DOWNLOAD_COVERS = False
+# Default: False -- Sorts downloaded songs into paths equal to Artist/Album/
+AUTO_SORT_SONGS = False
 
 if __name__ == "__main__":
     # Loops until either a choice of 1 or 2 is made
     while True:
         try:
+            print()
             print("How do you want to input playlist URLs?")
             print("1 - Input each URL individually")
             print("2 - Read from .txt file in url_txts folder")
@@ -29,7 +33,7 @@ if __name__ == "__main__":
             
             break
         except ValueError:
-            print("Please input either 1 or 2.")
+            print("Please input either 1 or 2.\n")
     
     # Carries out futher setup depending on playlist URL input choice
     while True:
@@ -38,7 +42,7 @@ if __name__ == "__main__":
                 playlist_count = int(input("How many playlists are being downloaded? "))
                 break
             except ValueError:
-                print("Please input an integer.")
+                print("Please input an integer.\n")
         else:  # Downloading from txt file auto sorts the songs by Artist/Album
             AUTO_SORT_SONGS = True
             break
@@ -74,6 +78,7 @@ if __name__ == "__main__":
             # Only asks for custom output path if auto sorting songs is turned off
             if not AUTO_SORT_SONGS:
                 output_path = input(f"What is your output path for playlist {i + 1}? ")
+                print()
             else:
                 # Specified output path is not needed if auto sorting since the path is generated using metadata
                 output_path = ""
@@ -98,11 +103,11 @@ if __name__ == "__main__":
             # Validates the existence (or lack thereof) of .txt file
             if not path.isfile(txt_path):
                 # Forces another loop if file does not exist
-                print("Please input the name of a text file that exists in the url_texts folder.")
+                print("Please input the name of a text file that exists in the url_texts folder.\n")
                 continue
             
             # Only reached if file does exist
-            print(f"Now downloading playlists in {txt_name}.txt!")
+            print(f"Downloading playlists in {txt_name}.txt...\n")
             break
         
         # Creates a list of all lines in .txt file
@@ -133,6 +138,8 @@ if __name__ == "__main__":
         # Creates playlist object in pytube from URL
         playlist = Playlist(playlist_url)
 
+        print(f"Now downloading all songs in {playlist.title}...\n")
+
         # Only used if set_track_number is set to True
         track_num = 1
 
@@ -151,11 +158,7 @@ if __name__ == "__main__":
                 file_name = f"{num_str} {file_name}"
             
             print(f"Downloading {file_name} by {data["artist"]}...")
-
-            # Downloads covers if desired
-            if DOWNLOAD_COVERS:
-                download_cover(data["cover_src"], data["album"])
-            
+  
             # Overwrites output path to Artist/Album if auto sorting is turned on
             if AUTO_SORT_SONGS:
                 path_start = f"content/songs/{data["artist"]}/"
@@ -173,8 +176,8 @@ if __name__ == "__main__":
             # Increments track number in case it is being written in metadata
             track_num += 1
             
-            print(file_name, "downloaded and written!\n")
+            print(f"{file_name} by {data["artist"]} downloaded and written!\n")
 
-        print(f"All songs in playlist downloaded!\n------------\n")
+        print(f"All songs in {playlist.title} have been downloaded!\n------------\n")
 
-    print("ALL playlists done downloading! Enjoy your music! :)\n")
+    print("ALL playlists are done downloading! Enjoy your music! :)\n")
