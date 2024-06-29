@@ -1,14 +1,5 @@
-import requests
 from pytubefix import YouTube
 from pydub import AudioSegment
-
-# Takes in image source URL and downloads it at parameterized path
-def download_cover(url, song_name) -> None:
-    image_data = requests.get(url).content
-
-    # Downloads album cover art in format of SongName.jpg in album_covers folder
-    path =  f'content/album_covers/{song_name}.jpg'
-    open(path, "wb").write(image_data)
 
 # Utilizes pydubs' AudioSegment class to convert fake MP3 downloaded from YouTube audio to recognizable MP3 file
 def convert_to_proper_mp3(path) -> None:
