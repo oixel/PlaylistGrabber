@@ -15,11 +15,12 @@ AUTO_SORT_SONGS = True
 DOWNLOAD_COVERS = False
 
 if __name__ == "__main__":
+    # Loops until either a choice of 1 or 2 is made
     while True:
         try:
             print("How do you want to input playlist URLs?")
-            print("1 - Input each individually")
-            print("2 - Read from urls.txt")
+            print("1 - Input each URL individually")
+            print("2 - Read from .txt file in url_txts folder")
             choice = int(input("Choice: "))
             print()
 
@@ -30,31 +31,51 @@ if __name__ == "__main__":
         except ValueError:
             print("Please input either 1 or 2.")
     
-    # Loops until a proper integer is given
+    # Carries out futher setup depending on playlist URL input choice
     while True:
-        if choice == 1:
+        if choice == 1:  # Gets desired count of playlists
             try:
                 playlist_count = int(input("How many playlists are being downloaded? "))
                 break
             except ValueError:
                 print("Please input an integer.")
-        else:
+        else:  # Downloading from txt file auto sorts the songs by Artist/Album
             AUTO_SORT_SONGS = True
             break
 
     # Stores tuples of format (YouTube link, output path)
     playlist_paths = []
 
+    # If manually inputting each playlist URL, get every playlist URL
     if choice == 1:
         # Fills playlist_paths with URLs and output paths
         for i in range(playlist_count):
-            # Gets inputs for the playlist to download and what folder to download to
-            playlist_url = input(f"What is your desired YouTube playlist URL for playlist {i + 1}? ")
+            # Loops until proper URL is pasted in
+            while True:
+                # Gets inputs for the playlist to download and what folder to download to
+                playlist_url = input(f"What is your desired YouTube playlist URL for playlist {i + 1}? ")
+
+                # Ensures that URL pasted is atleast somewhat a playlist URL
+                if "https://www.youtube.com/playlist?list=" not in playlist_url:
+                    print("Please enter proper YouTube playlist URL (e.g. includes https://www.youtube.com/playlist?list=)\n")
+                    continue
+                
+                # Checks to see if playlist actually exists
+                try:
+                    validity_test = Playlist(playlist_url)
+                    
+                    # If playlist exists, move on to next part
+                    if validity_test:
+                        break
+                except:
+                    print("URL is broken, please input another!\n")
+                    continue   
 
             # Only asks for custom output path if auto sorting songs is turned off
             if not AUTO_SORT_SONGS:
                 output_path = input(f"What is your output path for playlist {i + 1}? ")
             else:
+                # Specified output path is not needed if auto sorting since the path is generated using metadata
                 output_path = ""
             
             # Adds content/songs/ to the beginning of whatever desired path was inputted
@@ -66,26 +87,43 @@ if __name__ == "__main__":
             
             # Appends playlist url to recently created path
             playlist_paths.append((playlist_url, path))
-    else:
+    else:  # Called if reading playlist URLs from .txt file
+
+        # Loops until the name of a existing .txt file is given
         while True:
-            try:
-                txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
-                txt_path = "url_txts/" + txt_name + ".txt"
-                if not path.isfile(txt_path):
-                    raise
-                
-                print(f"Now downloading playlists in {txt_name}.txt!")
-                break
-            except:
+            # Creates path from potential name of .txt file
+            txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
+            txt_path = "url_txts/" + txt_name + ".txt"
+
+            # Validates the existence (or lack thereof) of .txt file
+            if not path.isfile(txt_path):
+                # Forces another loop if file does not exist
                 print("Please input the name of a text file that exists in the url_texts folder.")
+                continue
+            
+            # Only reached if file does exist
+            print(f"Now downloading playlists in {txt_name}.txt!")
+            break
+        
+        # Creates a list of all lines in .txt file
         url_txt = open(txt_path, "r")
         lines = url_txt.readlines()
 
+        # Loops through every line in .txt file and stores the working playlist URLs into playlist_paths
         for i in range(len(lines)):
+            # If not a URL, skip this line
             if "https://www.youtube.com/playlist?list=" not in lines[i]:
                 continue
-
-            playlist_paths.append((lines[i], ""))
+            
+            # Validates whether URL works
+            try:
+                validity_test = Playlist(lines[i])
+                
+                # If playlist exists, append to list of playlists
+                if validity_test:
+                    playlist_paths.append((lines[i], ""))  # Has no specified path since path will be generated every song download
+            except:  # If URL is broken, skip it
+                continue
 
     # Loops through all the URL / output path pairs in list
     for pair in playlist_paths:
