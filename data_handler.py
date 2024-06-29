@@ -69,7 +69,7 @@ class DataHandler:
         if self.metadata["cover_src"] == None:
             self.metadata["cover_src"] = "https://i.ibb.co/DDKn0JH/starcat.jpg"
 
-            # Uncomment to utilize video's thumbnail instead of awesome starcat image
+            # NOTE: Uncomment to utilize video's thumbnail instead of awesome starcat image
             # self.metadata["cover_src"] = song.thumbnail_url
         
         # If no song title is available, set title to YouTube video's title
