@@ -1,13 +1,11 @@
-import data_grabber as DG
+import data_handler as DH
 from downloader import *
 from renamer import *
-from pytube import *
-from mutagen.easyid3 import EasyID3
-from mutagen.id3 import ID3, APIC
-from io import BytesIO
+from pytube import Playlist
 
 # Change these constants to change what metadata is set
 SET_TRACK_NUMBERS = True
+SET_NUM_IN_FILENAME = True
 SET_COVER_ART = True
 
 # Change to true if album cover for song should be downloaded (if not already downloaded)
@@ -43,23 +41,28 @@ if __name__ == "__main__":
 
     # Loops through all the URL / output path pairs in list
     for pair in playlist_paths:
-        # Only used if SET_TRACK_NUMBERS is set to True
-        track_num = 1
-
         # Pulls values from the tuple into seperated variables
         playlist_url, path = pair
 
         # Creates playlist object in pytube from URL
         playlist = Playlist(playlist_url)
 
+        # Only used if set_track_number is set to True
+        track_num = 1
+
         # Loops through URLs in playlist--downloading and writing metadata for each
         for song_url in playlist.video_urls:
             # Grabs data from YouTube video and stores it in DataGrabber object
-            dg = DG.DataGrabber(song_url)
-            data = dg.get_data()
+            dh = DH.DataHandler(song_url)
+            data = dh.get_data()
 
             # Creates a appropriate file name with illegal characters and spaces removed
             file_name = rename(data["title"])
+
+            # Writes tracknumber before song title in filename if desired
+            if SET_NUM_IN_FILENAME:
+                num_str = str(track_num) if track_num >= 10 else f"0{track_num}"
+                file_name = f"{num_str} {file_name}"
             
             print(f"Downloading {file_name} by {data["artist"]}...")
 
@@ -70,41 +73,11 @@ if __name__ == "__main__":
             # Downloads song using pytube
             download_song(song_url, path, file_name)
 
-            # Creates an EasyID3 object and edits their metadata using mutagen
-            audio = EasyID3()
-            audio["title"] = f"{data["title"]}"
-            audio["artist"] = f"{data["artist"]}"
-            audio["albumartist"] = f"{data["artist"]}"
-            audio["album"] = f"{data["album"]}"
+            # Writes metadata onto MP3s
+            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
 
-            # If track numbers are desired, write track number into metadata and increment track number
-            if SET_TRACK_NUMBERS:
-                audio["tracknumber"] = f"{track_num}"
-                track_num += 1
-
-            # Saves metadata into proper MP3 file
-            audio.save(f"{path}{file_name}.mp3")
-
-            # Only embeds album covers if it desired
-            if SET_COVER_ART:
-                # Reads and store byte data for album cover image from image source's URL
-                cont = requests.get(data["cover_src"]).content
-                image_bytes = BytesIO(cont).read()
-
-                # Creates an ID3 object for current song (EasyID3 does not support embedding album art)
-                id3 = ID3(f"{path}{file_name}.mp3")
-                
-                # Embeds image byte data into front cover metadata tag
-                id3["APIC"] = APIC(
-                    encoding = 3,
-                    mime = "image/jpeg",
-                    type = 3,
-                    desc = u'Cover',
-                    data = image_bytes
-                )
-
-                # Saves new image data into MP3's ID3 metadata tags
-                id3.save()
+            # Increments track number in case it is being written in metadata
+            track_num += 1
             
             print(file_name, "downloaded and written!\n")
 
