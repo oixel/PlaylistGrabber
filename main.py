@@ -8,6 +8,8 @@ SET_TRACK_NUMBERS = True
 SET_NUM_IN_FILENAME = True
 SET_COVER_ART = True
 
+AUTO_SORT_SONGS = True
+
 # Change to true if album cover for song should be downloaded (if not already downloaded)
 DOWNLOAD_COVERS = False
 
@@ -27,7 +29,12 @@ if __name__ == "__main__":
     for i in range(playlist_count):
         # Gets inputs for the playlist to download and what folder to download to
         playlist_url = input(f"What is your desired YouTube playlist URL for playlist {i + 1}? ")
-        output_path = input(f"What is your output path for playlist {i + 1}? ")
+
+        # Only asks for custom output path if auto sorting songs is turned off
+        if not AUTO_SORT_SONGS:
+            output_path = input(f"What is your output path for playlist {i + 1}? ")
+        else:
+            output_path = ""
         
         # Adds content/songs/ to the beginning of whatever desired path was inputted
         path = f"content/songs/{output_path}"
@@ -70,6 +77,13 @@ if __name__ == "__main__":
             if DOWNLOAD_COVERS:
                 download_cover(data["cover_src"], data["album"])
             
+            # Overwrites output path to Artist/Album if auto sorting is turned on
+            if AUTO_SORT_SONGS:
+                if data["album"] != "":
+                    path = f"content/songs/{data["artist"]}/{data['album']}/"
+                else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder
+                    path = "content/songs/UNORGANIZED/"
+
             # Downloads song using pytube
             download_song(song_url, path, file_name)
 
@@ -83,4 +97,4 @@ if __name__ == "__main__":
 
         print(f"All songs in playlist downloaded!\n------------\n")
 
-    print("ALL playlists done downloading! Enjoy :)\n")
+    print("ALL playlists done downloading! Enjoy your music! :)\n")
