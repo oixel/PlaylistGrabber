@@ -58,7 +58,7 @@ if __name__ == "__main__":
     if AUTO_SORT_SONGS:
         USE_CUSTOM_ALBUM = False
         USE_CUSTOM_ARTIST = False
-        
+
     # Stores tuples of format (YouTube link, output path)
     playlist_paths = []
 
@@ -144,13 +144,13 @@ if __name__ == "__main__":
 
         # Loops through every line in .txt file and stores the working playlist URLs into playlist_paths
         for i in range(len(lines)):
+            # Write "END" at desired end if you wish to write comments or something outside of checked loop
+            if "END" in lines[i]:
+                break
+
             # If not a URL, skip this line
             if "https://www.youtube.com/playlist?list=" not in lines[i]:
                 continue
-
-            # Write "END" at desired end if you wish to write comments or something outside of checked loop
-            if lines[i] == "END":
-                break
 
             # Validates whether URL works
             try:
