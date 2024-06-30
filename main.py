@@ -256,6 +256,10 @@ if __name__ == "__main__":
                     path = f"{path_start}UNORGANIZED/"
             elif desired_path != None:  # Otherwise, if a custom path is desired, use that as output path instead
                 path = desired_path
+
+            # Ensures that path for song is allowed
+            path = rename(path, True)
+
             # Downloads song using pytube
             download_song(song_url, path, file_name)
             
