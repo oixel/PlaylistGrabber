@@ -9,18 +9,19 @@ from os import path
 # (Change the song's position in playlist to change the track number)
 SET_TRACK_NUMBERS = True
 
-# Default: False -- Writes track number (as explained above) in filename before title (e.g. "01 Song Name.mp3")
+# Default: False -- Writes track number (NOTE above) in filename before title (e.g. "01 Song Name.mp3")
 SET_NUM_IN_FILENAME = False
 
 # Default: True -- Embeds song's cover art into MP3 if available or generic filler drawing if not available
 # NOTE: to make cover art be video thumbnail instead of cat drawing, uncomment code under line 69 of data_handler.py
 SET_COVER_ART = True
 
-# Default: False -- Sorts downloaded songs into paths equal to Artist/Album/
-# NOTE: this is set to True whenever downloading playlists from a .txt file
-AUTO_SORT_SONGS = False
+# Default: True -- Sorts downloaded songs into paths equal to Artist/Album/
+# NOTE: this is always set to True whenever downloading playlists from a .txt file
+AUTO_SORT_SONGS = True
 
-# Default: False -- Allows for custom artist and album to be embeded into metadata when using Method 1
+# Default: False -- Allows for custom artist and album to be embeded into metadata--overwriting found metadata
+# NOTE: only affects Method 1 of inputting playlists URLs.
 USE_CUSTOM_ARTIST = False
 USE_CUSTOM_ALBUM = False
 
@@ -54,11 +55,6 @@ if __name__ == "__main__":
             AUTO_SORT_SONGS = True
             break
     
-    # Auto sorting songs conflicts with custom album and artist, so auto sorting disables customizing instead
-    if AUTO_SORT_SONGS:
-        USE_CUSTOM_ALBUM = False
-        USE_CUSTOM_ARTIST = False
-
     # Stores tuples of format (YouTube link, output path)
     playlist_paths = []
 
@@ -95,13 +91,27 @@ if __name__ == "__main__":
             
             # Gets custom artist for current playlist if custom artist is enabled
             if USE_CUSTOM_ARTIST:
-                artist = input(f"What is the custom ARTIST for playlist {i + 1}? ")
-                custom_artists.append(artist)
+                artist = input(f"What is the custom ARTIST for playlist {i + 1}? (Leave blank for regular metadata) ")
+                
+                # 
+                if artist != "":
+                    custom_artists.append(artist)
+                else:
+                    custom_artists.append(None)
+            else:
+                custom_artists.append(None)
             
             # Gets custom album for current playlist if custom album is enabled
             if USE_CUSTOM_ALBUM:
-                album = input(f"What is the custom ALBUM for playlist {i + 1}? ")
-                custom_albums.append(album)
+                album = input(f"What is the custom ALBUM for playlist {i + 1}? (Leave blank for regular metadata) ")
+                
+                # 
+                if album != "":
+                    custom_albums.append(album)
+                else:
+                    custom_albums.append(None)
+            else:
+                custom_albums.append(None)
 
             # Only asks for custom output path if auto sorting songs is turned off
             if not AUTO_SORT_SONGS:
@@ -182,6 +192,12 @@ if __name__ == "__main__":
         for song_url in playlist.video_urls:
             # Grabs data from YouTube video and stores it in DataGrabber object
             dh = DH.DataHandler(song_url)
+            
+            # 
+            dh.overwrite_artist(custom_artists[custom_index])
+            dh.overwrite_album(custom_albums[custom_index])
+            
+            # Updates
             data = dh.get_data()
 
             # Creates a appropriate file name with illegal characters and spaces removed
@@ -193,7 +209,7 @@ if __name__ == "__main__":
                 file_name = f"{num_str} {file_name}"
             
             print(f"Downloading {file_name} by {data["artist"]}...")
-  
+
             # Overwrites output path to Artist/Album if auto sorting is turned on
             if AUTO_SORT_SONGS:
                 path_start = f"content/songs/{data["artist"]}/"
@@ -204,13 +220,9 @@ if __name__ == "__main__":
 
             # Downloads song using pytube
             download_song(song_url, path, file_name)
-
-            # Sets custom artist/album to what was inputted at beginning if custom artist/album is enabled
-            custom_artist = custom_artists[custom_index] if USE_CUSTOM_ARTIST else None
-            custom_album = custom_albums[custom_index] if USE_CUSTOM_ALBUM else None
             
             # Writes metadata onto MP3s
-            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART, custom_artist, custom_album)
+            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
 
             # Increments track number in case it is being written in metadata
             track_num += 1
