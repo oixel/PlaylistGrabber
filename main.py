@@ -22,8 +22,26 @@ AUTO_SORT_SONGS = True
 
 # Default: False -- Allows for custom artist and album to be embeded into metadata--overwriting found metadata
 # NOTE: only affects Method 1 of inputting playlists URLs.
+# NOTE: to set custom artist / album write "ARTIST[text]" and/or "ALBUM[text]" in the line above the playlist's URL
 USE_CUSTOM_ARTIST = False
 USE_CUSTOM_ALBUM = False
+
+# Returns string in between two markers (if it exists) -- used to find ARTIST[] and ALBUM[] in .txt files
+def get_substr(start_marker : str, end_marker : str, line : str) -> str | None:
+    # Checks if marker even exists in main string
+    if start_marker in line:
+        # Gets positions of start and end of substring
+        start = line.find(start_marker) + len(start_marker)
+        end = line.find(end_marker, start)
+
+        # If either start or end position of substring does not exist, custom data does not exist properly
+        if start == -1 or end == -1:
+            return None
+
+        # Returns substring found in between the two positions
+        return line[start:end]
+    else:  # If start marker does not exist, then the substring does not either
+        return None
 
 if __name__ == "__main__":
     # Loops until either a choice of 1 or 2 is made
@@ -171,6 +189,16 @@ if __name__ == "__main__":
                     playlist_paths.append((lines[i], ""))  # Has no specified path since path will be generated every song download
             except:  # If URL is broken, skip it
                 continue
+            
+            # Stores custom artist (to overwrite metadata) if one is written in line above playlist URL
+            artist_marker = "ARTIST["
+            new_artist = get_substr(artist_marker, "]", lines[i - 1])
+            custom_artists.append(new_artist)
+
+            # Stores custom album (to overwrite metadata) if one is written in line above playlist URL
+            album_marker = "ALBUM["
+            new_album = get_substr(album_marker, "]", lines[i - 1])
+            custom_albums.append(new_album)
     
     # Keeps track of what custom artist/album to embed in metadata for songs in current playlist
     custom_index = 0
