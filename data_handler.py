@@ -117,13 +117,25 @@ class DataHandler:
 
         return self.metadata
 
-    def write_data(self, path, file_name, track_num, set_track_number, set_cover_art) -> None:
+    # Writes metadata into MP3 file
+    def write_data(self, path, file_name, track_num, set_track_number, set_cover_art, custom_artist, custom_album) -> None:
         # Creates an EasyID3 object and edits their metadata using mutagen
         audio = EasyID3()
         audio["title"] = f"{self.metadata["title"]}"
-        audio["artist"] = f"{self.metadata["artist"]}"
-        audio["albumartist"] = f"{self.metadata["artist"]}"
-        audio["album"] = f"{self.metadata["album"]}"
+        
+        # Writes scraped artist unless custom artist is desired
+        if custom_artist == None:
+            audio["artist"] = f"{self.metadata["artist"]}"
+            audio["albumartist"] = f"{self.metadata["artist"]}"
+        else:
+            audio["artist"] = custom_artist
+            audio["albumartist"] = custom_artist
+        
+        # Writes scraped album unless custom album is desired
+        if custom_album == None:
+            audio["album"] = f"{self.metadata["album"]}"
+        else:
+            audio["album"] = custom_album
 
         # If track numbers are desired, write track number into metadata
         if set_track_number:
