@@ -20,6 +20,10 @@ SET_COVER_ART = True
 # NOTE: this is set to True whenever downloading playlists from a .txt file
 AUTO_SORT_SONGS = False
 
+# Default: False -- Allows for custom artist and album to be embeded into metadata when using Method 1
+USE_CUSTOM_ARTIST = False
+USE_CUSTOM_ALBUM = False
+
 if __name__ == "__main__":
     # Loops until either a choice of 1 or 2 is made
     while True:
@@ -49,9 +53,20 @@ if __name__ == "__main__":
         else:  # Downloading from txt file auto sorts the songs by Artist/Album
             AUTO_SORT_SONGS = True
             break
-
+    
+    # Auto sorting songs conflicts with custom album and artist, so auto sorting disables customizing instead
+    if AUTO_SORT_SONGS:
+        USE_CUSTOM_ALBUM = False
+        USE_CUSTOM_ARTIST = False
+        
     # Stores tuples of format (YouTube link, output path)
     playlist_paths = []
+
+    # Only filled if USE_CUSTOM_ARTIST is set to True
+    custom_artists = []
+
+    # Only filled if USE_CUSTOM_ALBUM is set to True
+    custom_albums = []
 
     # If manually inputting each playlist URL, get every playlist URL
     if choice == 1:
@@ -77,6 +92,16 @@ if __name__ == "__main__":
                 except:
                     print("URL is broken, please input another!\n")
                     continue   
+            
+            # Gets custom artist for current playlist if custom artist is enabled
+            if USE_CUSTOM_ARTIST:
+                artist = input(f"What is the custom ARTIST for playlist {i + 1}? ")
+                custom_artists.append(artist)
+            
+            # Gets custom album for current playlist if custom album is enabled
+            if USE_CUSTOM_ALBUM:
+                album = input(f"What is the custom ALBUM for playlist {i + 1}? ")
+                custom_albums.append(album)
 
             # Only asks for custom output path if auto sorting songs is turned off
             if not AUTO_SORT_SONGS:
@@ -122,7 +147,11 @@ if __name__ == "__main__":
             # If not a URL, skip this line
             if "https://www.youtube.com/playlist?list=" not in lines[i]:
                 continue
-            
+
+            # Write "END" at desired end if you wish to write comments or something outside of checked loop
+            if lines[i] == "END":
+                break
+
             # Validates whether URL works
             try:
                 validity_test = Playlist(lines[i])
@@ -132,6 +161,9 @@ if __name__ == "__main__":
                     playlist_paths.append((lines[i], ""))  # Has no specified path since path will be generated every song download
             except:  # If URL is broken, skip it
                 continue
+    
+    # Keeps track of what custom artist/album to embed in metadata for songs in current playlist
+    custom_index = 0
 
     # Loops through all the URL / output path pairs in list
     for pair in playlist_paths:
@@ -173,8 +205,12 @@ if __name__ == "__main__":
             # Downloads song using pytube
             download_song(song_url, path, file_name)
 
+            # Sets custom artist/album to what was inputted at beginning if custom artist/album is enabled
+            custom_artist = custom_artists[custom_index] if USE_CUSTOM_ARTIST else None
+            custom_album = custom_albums[custom_index] if USE_CUSTOM_ALBUM else None
+            
             # Writes metadata onto MP3s
-            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
+            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART, custom_artist, custom_album)
 
             # Increments track number in case it is being written in metadata
             track_num += 1
@@ -182,5 +218,8 @@ if __name__ == "__main__":
             print(f"{file_name} by {data["artist"]} downloaded and written!\n")
 
         print(f"All songs in {playlist.title} have been downloaded!\n------------\n")
+
+        # Increment index of custom artist/album
+        custom_index += 1
 
     print("ALL playlists are done downloading! Enjoy your music! :)\n")
