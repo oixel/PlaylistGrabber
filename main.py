@@ -126,7 +126,7 @@ if __name__ == "__main__":
         while True:
             # Creates path from potential name of .txt file
             txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
-            txt_path = "url_txts/" + txt_name + ".txt"
+            txt_path = "content/url_txts/" + txt_name + ".txt"
 
             # Validates the existence (or lack thereof) of .txt file
             if not path.isfile(txt_path):
