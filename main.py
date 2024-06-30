@@ -135,21 +135,20 @@ if __name__ == "__main__":
             if not AUTO_SORT_SONGS:
                 output_path = input(f"What is your output path for playlist {i + 1}? ")
                 print()
+
+                # Adds content/songs/ to the beginning of whatever desired path was inputted
+                path = f"content/songs/{output_path}"
+
+                # If path does not end with slash, add one to it
+                if path[-1] != '/':
+                    path += '/'
             else:
                 # Specified output path is not needed if auto sorting since the path is generated using metadata
-                output_path = ""
-            
-            # Adds content/songs/ to the beginning of whatever desired path was inputted
-            path = f"content/songs/{output_path}"
-
-            # If path does not end with slash, add one to it
-            if path[-1] != '/':
-                path += '/'
+                path = None
             
             # Appends playlist url to recently created path
             playlist_paths.append((playlist_url, path))
     else:  # Called if reading playlist URLs from .txt file
-
         # Loops until the name of a existing .txt file is given
         while True:
             # Creates path from potential name of .txt file
@@ -179,25 +178,35 @@ if __name__ == "__main__":
             # If not a URL, skip this line
             if "https://www.youtube.com/playlist?list=" not in lines[i]:
                 continue
+            
+            # Stores new path to overwrite autosort's Artist/Album (if PATH[text] is written in line above)
+            new_path = get_substr("PATH[", "]", lines[i - 1])
 
+            # Cleans up new path, if custom path exists
+            if new_path != None:
+                # Adds default folder path of content/songs/ to beginning of path
+                new_path = f"content/songs/{new_path}"
+
+                # If path does not end with slash, add one to it
+                if new_path[-1] != '/':
+                    new_path += '/' 
+                    
             # Validates whether URL works
             try:
                 validity_test = Playlist(lines[i])
                 
-                # If playlist exists, append to list of playlists
+                # If playlist exists, append to list of playlists with either the custom path found in the line above or None (so auto sort handles it)
                 if validity_test:
-                    playlist_paths.append((lines[i], ""))  # Has no specified path since path will be generated every song download
+                    playlist_paths.append((lines[i], new_path))
             except:  # If URL is broken, skip it
                 continue
             
             # Stores custom artist (to overwrite metadata) if one is written in line above playlist URL
-            artist_marker = "ARTIST["
-            new_artist = get_substr(artist_marker, "]", lines[i - 1])
+            new_artist = get_substr("ARTIST[", "]", lines[i - 1])
             custom_artists.append(new_artist)
 
             # Stores custom album (to overwrite metadata) if one is written in line above playlist URL
-            album_marker = "ALBUM["
-            new_album = get_substr(album_marker, "]", lines[i - 1])
+            new_album = get_substr("ALBUM[", "]", lines[i - 1])
             custom_albums.append(new_album)
     
     # Keeps track of what custom artist/album to embed in metadata for songs in current playlist
@@ -238,8 +247,8 @@ if __name__ == "__main__":
             
             print(f"Downloading {file_name} by {data["artist"]}...")
 
-            # Overwrites output path to Artist/Album if auto sorting is turned on
-            if AUTO_SORT_SONGS:
+            # Overwrites output path to Artist/Album if auto sorting is turned on and custom path not desired in Method 2
+            if AUTO_SORT_SONGS and path == None:
                 path_start = f"content/songs/{data["artist"]}/"
                 if data["album"] != "":
                     path = f"{path_start}{data['album']}/"
