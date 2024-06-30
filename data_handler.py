@@ -164,12 +164,12 @@ class DataHandler:
             # Saves new image data into MP3's ID3 metadata tags
             id3.save()
 
-    # 
+    # If a custom artist is desired for current playlist, overwrite the currently stored artist for this song
     def overwrite_artist(self, artist) -> None:
         if artist != None:
             self.metadata["artist"] = artist
 
-    #
+    # If a custom album is desired for current playlist, overwrite the currently stored album for this song
     def overwrite_album(self, album) -> None:
         if album != None:
             self.metadata["album"] = album

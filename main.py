@@ -93,24 +93,24 @@ if __name__ == "__main__":
             if USE_CUSTOM_ARTIST:
                 artist = input(f"What is the custom ARTIST for playlist {i + 1}? (Leave blank for regular metadata) ")
                 
-                # 
+                # Allows custom artist to be skipped for individual playlists by inputting nothing
                 if artist != "":
                     custom_artists.append(artist)
                 else:
                     custom_artists.append(None)
-            else:
+            else:  # Appends None for all values in custom_artists if not using custom artists
                 custom_artists.append(None)
             
             # Gets custom album for current playlist if custom album is enabled
             if USE_CUSTOM_ALBUM:
                 album = input(f"What is the custom ALBUM for playlist {i + 1}? (Leave blank for regular metadata) ")
                 
-                # 
+                # Allows custom album to be skipped for individual playlists by inputting nothing
                 if album != "":
                     custom_albums.append(album)
                 else:
                     custom_albums.append(None)
-            else:
+            else:  # Appends None for all values in custom_albums if not using custom albums
                 custom_albums.append(None)
 
             # Only asks for custom output path if auto sorting songs is turned off
@@ -193,11 +193,11 @@ if __name__ == "__main__":
             # Grabs data from YouTube video and stores it in DataGrabber object
             dh = DH.DataHandler(song_url)
             
-            # 
+            # Attempts to overwrite metadata using the values stored in the custom lists of custom values
             dh.overwrite_artist(custom_artists[custom_index])
             dh.overwrite_album(custom_albums[custom_index])
             
-            # Updates
+            # Stores filled out and (potentially) overwritten metadata dictionary into a dictionary
             data = dh.get_data()
 
             # Creates a appropriate file name with illegal characters and spaces removed
