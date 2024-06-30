@@ -9,8 +9,8 @@ from os import path
 # (Change the song's position in playlist to change the track number)
 SET_TRACK_NUMBERS = True
 
-# Default: False -- Writes track number (NOTE above) in filename before title (e.g. "01 Song Name.mp3")
-SET_NUM_IN_FILENAME = False
+# Default: True -- Writes track number (NOTE above) in filename before title (e.g. "01 Song Name.mp3")
+SET_NUM_IN_FILENAME = True
 
 # Default: True -- Embeds song's cover art into MP3 if available or generic filler drawing if not available
 # NOTE: to make cover art be video thumbnail instead of cat drawing, uncomment code under line 69 of data_handler.py
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     # Loops through all the URL / output path pairs in list
     for pair in playlist_paths:
         # Pulls values from the tuple into seperated variables
-        playlist_url, path = pair
+        playlist_url, desired_path = pair
 
         # Creates playlist object in pytube from URL
         playlist = Playlist(playlist_url)
@@ -248,13 +248,14 @@ if __name__ == "__main__":
             print(f"Downloading {file_name} by {data["artist"]}...")
 
             # Overwrites output path to Artist/Album if auto sorting is turned on and custom path not desired in Method 2
-            if AUTO_SORT_SONGS and path == None:
+            if AUTO_SORT_SONGS and desired_path == None:
                 path_start = f"content/songs/{data["artist"]}/"
                 if data["album"] != "":
                     path = f"{path_start}{data['album']}/"
                 else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder under artist's name
                     path = f"{path_start}UNORGANIZED/"
-
+            elif desired_path != None:  # Otherwise, if a custom path is desired, use that as output path instead
+                path = desired_path
             # Downloads song using pytube
             download_song(song_url, path, file_name)
             
