@@ -33,6 +33,8 @@ class DataHandler:
         # Makes sure that first search for album cover starts at the beginning of HTML
         self.prev_end = 0
 
+        self.create_data()
+
     # Takes marker and searches for it from the previous data's end character index to the end of the HTML
     # Returns: new point to search for next marker from and found data
     def find_data(self, marker, is_cover_src = False) -> tuple[int, str]:
@@ -84,8 +86,8 @@ class DataHandler:
         if self.metadata["album"] == None:
             self.metadata["album"] = ""
 
-    # Gets all desired metadata from self's HTML
-    def get_data(self) -> dict:
+    # Pulls all desired metadata from self's HTML and stores it in internal dictionary
+    def create_data(self) -> None:
         # Gets album cover's source
         self.prev_end, self.metadata["cover_src"] = self.find_data(self.COVER_MARKER, is_cover_src=True)
         
@@ -117,25 +119,22 @@ class DataHandler:
 
         return self.metadata
 
+    # Returns currently stored metadata
+    def get_data(self) -> dict:
+        return self.metadata
+
     # Writes metadata into MP3 file
-    def write_data(self, path, file_name, track_num, set_track_number, set_cover_art, custom_artist, custom_album) -> None:
+    def write_data(self, path, file_name, track_num, set_track_number, set_cover_art) -> None:
         # Creates an EasyID3 object and edits their metadata using mutagen
         audio = EasyID3()
         audio["title"] = f"{self.metadata["title"]}"
         
-        # Writes scraped artist unless custom artist is desired
-        if custom_artist == None:
-            audio["artist"] = f"{self.metadata["artist"]}"
-            audio["albumartist"] = f"{self.metadata["artist"]}"
-        else:
-            audio["artist"] = custom_artist
-            audio["albumartist"] = custom_artist
+        # Embeds scraped artist or custom artist (if overwriting occured) into MP3
+        audio["artist"] = f"{self.metadata["artist"]}"
+        audio["albumartist"] = f"{self.metadata["artist"]}"
         
-        # Writes scraped album unless custom album is desired
-        if custom_album == None:
-            audio["album"] = f"{self.metadata["album"]}"
-        else:
-            audio["album"] = custom_album
+        # Writes scraped album or custom album (if overwriting occured) into MP3
+        audio["album"] = f"{self.metadata["album"]}"
 
         # If track numbers are desired, write track number into metadata
         if set_track_number:
@@ -164,3 +163,13 @@ class DataHandler:
 
             # Saves new image data into MP3's ID3 metadata tags
             id3.save()
+
+    # 
+    def overwrite_artist(self, artist) -> None:
+        if artist != None:
+            self.metadata["artist"] = artist
+
+    #
+    def overwrite_album(self, album) -> None:
+        if album != None:
+            self.metadata["album"] = album
