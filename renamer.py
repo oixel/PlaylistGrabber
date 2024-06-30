@@ -1,5 +1,4 @@
 def fix_unicode(string) -> str:
-    print(string)
     if "u0026" in string:
         string = string.replace("\\", "").replace("u0026", "&")
     if "u003e" in string:
