@@ -1,17 +1,20 @@
 def fix_unicode(string) -> str:
+    print(string)
     if "u0026" in string:
         string = string.replace("\\", "").replace("u0026", "&")
     if "u003e" in string:
         string = string.replace("\\", "").replace("u003e", ">")
     if "u003c" in string:
         string = string.replace("\\", "").replace("u003c", "<")
+    if '\\"' in string:
+        string = string.replace("\\", "")
     
     return string
 
 def rename(name) -> str:
     new_name = ""
 
-    ALLOWED_CHAR = "!&-,()$@%#:;'\"+=_ "
+    ALLOWED_CHAR = "!&-,()$@%#;'+=_ "
 
     name = fix_unicode(name)
     

@@ -37,14 +37,14 @@ class DataHandler:
 
     # Takes marker and searches for it from the previous data's end character index to the end of the HTML
     # Returns: new point to search for next marker from and found data
-    def find_data(self, marker, is_cover_src = False) -> tuple[int, str]:
+    def find_data(self, marker, end_marker='"', is_cover_src = False) -> tuple[int, str]:
         # Sets offset to make sure that weird HTML data is not included in metadata information
         offset = len(marker)
 
         try:
             # Start search at last data's end and add offset of character count of marker to make sure it searches past marker
             start = self.html.index(marker, self.prev_end) + offset
-            end = self.html.index('"', start)  # " indicates the end of metadata value
+            end = self.html.index(end_marker, start)  # " indicates the end of metadata value
             data = self.html[start:end]
             
             # Ensures that there is no indexing bug for a cover source that does not actually exists
@@ -92,9 +92,10 @@ class DataHandler:
         self.prev_end, self.metadata["cover_src"] = self.find_data(self.COVER_MARKER, is_cover_src=True)
         
         # Gets song's title
-        self.prev_end, self.metadata["title"] = self.find_data(self.SONG_MARKER)
+        self.prev_end, self.metadata["title"] = self.find_data(self.SONG_MARKER, end_marker='","subtitle":"')
 
         # Gets artist's name
+        # If there is a song title, include it in marker for more accurate finding
         if self.metadata["title"] != None:
             self.prev_end -= len(self.metadata["title"])
             artist_marker = f'{self.metadata["title"]}{self.ARTIST_MARKER}'
