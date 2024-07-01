@@ -172,7 +172,7 @@ if __name__ == "__main__":
         # Loops through every line in .txt file and stores the working playlist URLs into playlist_paths
         for i in range(len(lines)):
             # Write "END" at desired end if you wish to write comments or something outside of checked loop
-            if "END" in lines[i]:
+            if lines[i] == "END\n" or lines[i] == "END":  # Ends regardless if there are lines under END line
                 break
 
             # If not a URL, skip this line
