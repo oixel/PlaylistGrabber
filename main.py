@@ -44,7 +44,7 @@ def get_substr(start_marker : str, end_marker : str, line : str) -> str | None:
         return None
 
 if __name__ == "__main__":
-    directory = os.path.dirname(__file__)
+    directory = os.path.dirname(__file__) + "/"
 
     # Loops until either a choice of 1 or 2 is made
     while True:
@@ -263,11 +263,9 @@ if __name__ == "__main__":
             path = rename(path, True)
 
             # Attempts to download song using pytube, if it fails, skips over it
-            if download_song(song_url, path, file_name) == False:
+            if download_song(song_url, directory, path, file_name) == False:
                 # Removes song that failed to download
                 os.remove(f"{directory}/{path}{file_name}.mp3")
-
-                print("ERROR Resolved!")
 
                 # Ensures the rest of the songs still have their correct track number
                 track_num += 1
@@ -275,7 +273,7 @@ if __name__ == "__main__":
                 continue
             
             # Writes metadata onto MP3s
-            dh.write_data(f"{directory}/{path}", file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
+            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
 
             # Increments track number in case it is being written in metadata
             track_num += 1
