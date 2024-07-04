@@ -1,0 +1,23 @@
+# Adrianne Lenker's discography
+
+# Hours Were the Birds
+https://www.youtube.com/playlist?list=PLb94Zw9KCu-emiVN8Tl8A37583TVprIU9
+
+# a-sides
+PATH[Adrianne Lenker/a-sides]
+https://www.youtube.com/playlist?list=OLAK5uy_npsStMZrgy4JxPICGNozp5LssFDfUKT0E
+
+# b-sides
+PATH[Adrianne Lenker/b-sides]
+https://www.youtube.com/playlist?list=OLAK5uy_lQSs8XIUUK1Jew4Xo-E45X8-gLevwkl-E
+
+# abysskiss
+ARTIST[Adrianne Lenker] :: ALBUM[abysskiss]
+https://www.youtube.com/playlist?list=PLb94Zw9KCu-e68crExDomC7AEHJlbf1ts
+
+# songs
+ALBUM[songs]
+https://www.youtube.com/playlist?list=PLM_eo-srGT71FK6lo6f3zRghqJjMmAJtW
+
+# Bright Future
+https://www.youtube.com/playlist?list=PL7QOWfqDaxmATzL4VZVe1i8F1mVHrxQzW
