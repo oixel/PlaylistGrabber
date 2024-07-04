@@ -1,0 +1,1 @@
+This is where the songs will download into regardless if you input a custom path or if auto-sort is on.
