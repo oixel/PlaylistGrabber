@@ -2,7 +2,7 @@ import data_handler as DH
 from downloader import *
 from renamer import *
 from pytube import Playlist
-from os import path
+import os
 
 # Default: True -- Writes track number in MP3's metadata
 # NOTE: Track number is representative of song's position in playlist 
@@ -44,6 +44,8 @@ def get_substr(start_marker : str, end_marker : str, line : str) -> str | None:
         return None
 
 if __name__ == "__main__":
+    directory = os.path.dirname(__file__)
+
     # Loops until either a choice of 1 or 2 is made
     while True:
         try:
@@ -137,7 +139,7 @@ if __name__ == "__main__":
                 print()
 
                 # Adds content/songs/ to the beginning of whatever desired path was inputted
-                path = f"content/songs/{output_path}"
+                path = f"{directory}/content/songs/{output_path}"
 
                 # If path does not end with slash, add one to it
                 if path[-1] != '/':
@@ -153,10 +155,10 @@ if __name__ == "__main__":
         while True:
             # Creates path from potential name of .txt file
             txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
-            txt_path = "content/url_txts/" + txt_name + ".txt"
+            txt_path = directory + "/content/url_txts/" + txt_name + ".txt"
 
             # Validates the existence (or lack thereof) of .txt file
-            if not path.isfile(txt_path):
+            if not os.path.isfile(txt_path):
                 # Forces another loop if file does not exist
                 print("Please input the name of a text file that exists in the url_texts folder.\n")
                 continue
@@ -185,7 +187,7 @@ if __name__ == "__main__":
             # Cleans up new path, if custom path exists
             if new_path != None:
                 # Adds default folder path of content/songs/ to beginning of path
-                new_path = f"content/songs/{new_path}"
+                new_path = f"{directory}/content/songs/{new_path}"
 
                 # If path does not end with slash, add one to it
                 if new_path[-1] != '/':
@@ -249,7 +251,7 @@ if __name__ == "__main__":
 
             # Overwrites output path to Artist/Album if auto sorting is turned on and custom path not desired in Method 2
             if AUTO_SORT_SONGS and desired_path == None:
-                path_start = f"content/songs/{data['artist']}/"
+                path_start = f"{directory}/content/songs/{data['artist']}/"
                 if data["album"] != "":
                     path = f"{path_start}{data['album']}/"
                 else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder under artist's name
