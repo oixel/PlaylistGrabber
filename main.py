@@ -260,8 +260,10 @@ if __name__ == "__main__":
             # Ensures that path for song is allowed
             path = rename(path, True)
 
-            # Downloads song using pytube
-            download_song(song_url, path, file_name)
+            # Attempts to download song using pytube, if it fails, skips over it
+            if download_song(song_url, path, file_name) == False:
+                track_num += 1
+                continue
             
             # Writes metadata onto MP3s
             dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
