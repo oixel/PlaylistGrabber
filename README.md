@@ -11,6 +11,8 @@ NOTE: You must have Python3 and pip already installed before following these ste
 5) run "python -m main"
 
 ### ⭐ NOTE ⭐
-When you attempt to download anything, you will receive a message saying 
-"Please open [ Google device link ] and input code ###-###-####".
+When you attempt to download anything, you will receive a message saying: 
+
+- "Please open [ Google device link ] and input code ###-###-####".
+
 If you desire to download songs marked as explicit by YouTube, you must log in to an account with age registrictions turned off. Otherwise, explicit songs will be skipped by downloader
