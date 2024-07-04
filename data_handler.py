@@ -128,14 +128,14 @@ class DataHandler:
     def write_data(self, path, file_name, track_num, set_track_number, set_cover_art) -> None:
         # Creates an EasyID3 object and edits their metadata using mutagen
         audio = EasyID3()
-        audio["title"] = f"{self.metadata["title"]}"
+        audio["title"] = f"{self.metadata['title']}"
         
         # Embeds scraped artist or custom artist (if overwriting occured) into MP3
-        audio["artist"] = f"{self.metadata["artist"]}"
-        audio["albumartist"] = f"{self.metadata["artist"]}"
+        audio["artist"] = f"{self.metadata['artist']}"
+        audio["albumartist"] = f"{self.metadata['artist']}"
         
         # Writes scraped album or custom album (if overwriting occured) into MP3
-        audio["album"] = f"{self.metadata["album"]}"
+        audio["album"] = f"{self.metadata['album']}"
 
         # If track numbers are desired, write track number into metadata
         if set_track_number:
@@ -147,7 +147,7 @@ class DataHandler:
         # Only embeds album covers if it desired
         if set_cover_art:
             # Reads and store byte data for album cover image from image source's URL
-            cont = requests.get(self.metadata["cover_src"]).content
+            cont = requests.get(self.metadata['cover_src']).content
             image_bytes = BytesIO(cont).read()
 
             # Creates an ID3 object for current song (EasyID3 does not support embedding album art)
@@ -168,9 +168,9 @@ class DataHandler:
     # If a custom artist is desired for current playlist, overwrite the currently stored artist for this song
     def overwrite_artist(self, artist) -> None:
         if artist != None:
-            self.metadata["artist"] = artist
+            self.metadata['artist'] = artist
 
     # If a custom album is desired for current playlist, overwrite the currently stored album for this song
     def overwrite_album(self, album) -> None:
         if album != None:
-            self.metadata["album"] = album
+            self.metadata['album'] = album
