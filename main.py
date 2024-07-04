@@ -44,6 +44,8 @@ def get_substr(start_marker : str, end_marker : str, line : str) -> str | None:
         return None
 
 if __name__ == "__main__":
+    directory = os.path.dirname(__file__)
+
     # Loops until either a choice of 1 or 2 is made
     while True:
         try:
@@ -153,7 +155,7 @@ if __name__ == "__main__":
         while True:
             # Creates path from potential name of .txt file
             txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
-            txt_path = os.path.dirname(__file__) + "/content/url_txts/" + txt_name + ".txt"
+            txt_path = directory + "/content/url_txts/" + txt_name + ".txt"
 
             # Validates the existence (or lack thereof) of .txt file
             if not os.path.isfile(txt_path):
@@ -266,7 +268,7 @@ if __name__ == "__main__":
                 continue
             
             # Writes metadata onto MP3s
-            dh.write_data(path, file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
+            dh.write_data(f"{directory}/{path}", file_name, track_num, SET_TRACK_NUMBERS, SET_COVER_ART)
 
             # Increments track number in case it is being written in metadata
             track_num += 1
