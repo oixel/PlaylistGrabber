@@ -245,11 +245,11 @@ if __name__ == "__main__":
                 num_str = str(track_num) if track_num >= 10 else f"0{track_num}"
                 file_name = f"{num_str} {file_name}"
             
-            print(f"Downloading {file_name} by {data["artist"]}...")
+            print(f"Downloading {file_name} by {data['artist']}...")
 
             # Overwrites output path to Artist/Album if auto sorting is turned on and custom path not desired in Method 2
             if AUTO_SORT_SONGS and desired_path == None:
-                path_start = f"content/songs/{data["artist"]}/"
+                path_start = f"content/songs/{data['artist']}/"
                 if data["album"] != "":
                     path = f"{path_start}{data['album']}/"
                 else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder under artist's name
@@ -269,7 +269,7 @@ if __name__ == "__main__":
             # Increments track number in case it is being written in metadata
             track_num += 1
             
-            print(f"{file_name} by {data["artist"]} downloaded and written!\n")
+            print(f"{file_name} by {data['artist']} downloaded and written!\n")
 
         print(f"All songs in {playlist.title} have been downloaded!\n------------\n")
 
