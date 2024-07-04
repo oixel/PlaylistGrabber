@@ -1,0 +1,33 @@
+# Kendrick Lamar's discography
+
+# Overly Dedicated
+https://www.youtube.com/playlist?list=PLEkMHvuV2h42FOoEciTEndY9nBrhOvmns
+
+# Section.80
+https://www.youtube.com/playlist?list=PLTfO7IRJ-B3ArYZJ8fcQsQOOV0SLfuKae
+
+# good kid, m.A.A.d city (Deluxe)
+ALBUM[good kid, m.A.A.d. city]
+https://www.youtube.com/playlist?list=PL2fTbjKYTzKczFo3HX2NAEwzksJYv4mqG
+
+# To Pimp a Butterfly
+https://www.youtube.com/playlist?list=PLDCdjwiC90TGNwIVOUU_mKmThxmYPcKZr
+
+# untitled unmastered.
+https://www.youtube.com/playlist?list=PL3r1ldjYHlYMlgGJTxWBo36po2ESO0kit
+
+# DAMN.
+ALBUM[DAMN.]
+https://www.youtube.com/playlist?list=PLrbUxSl4nExNkwtsO8J-1PsN86RxvrPrT
+
+# Black Panther (Soundtrack)
+ARTIST[Kendrick Lamar] :: ALBUM[Black Panther]
+https://www.youtube.com/playlist?list=PL2fTbjKYTzKeOqN4zBil78PVf9AA7D8zq
+
+# Mr. Morale & The Big Steppers
+ARTIST[Kendrick Lamar]
+https://www.youtube.com/playlist?list=OLAK5uy_mdeH-JtTLsVGDionNbEvJGtQw--uolZy8
+
+# Singles
+ARTIST[Kendrick Lamar] :: ALBUM[Kendrick - Singles] :: PATH[Kendrick Lamar/Singles]
+https://www.youtube.com/playlist?list=PL2fTbjKYTzKc2GZ3CofhbQAYc9kn1JqgB
