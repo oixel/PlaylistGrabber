@@ -10,6 +10,8 @@ NOTE: You must have Python3 and pip already installed before following these ste
 4) cd into PlaylistGrabber folder
 5) run "python -m main"
 
+You are now all set up!
+
 ### ⭐ NOTE ⭐
 When you attempt to download anything, you will receive a message saying: 
 
