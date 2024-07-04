@@ -44,8 +44,6 @@ def get_substr(start_marker : str, end_marker : str, line : str) -> str | None:
         return None
 
 if __name__ == "__main__":
-    directory = os.path.dirname(__file__)
-
     # Loops until either a choice of 1 or 2 is made
     while True:
         try:
@@ -139,7 +137,7 @@ if __name__ == "__main__":
                 print()
 
                 # Adds content/songs/ to the beginning of whatever desired path was inputted
-                path = f"{directory}/content/songs/{output_path}"
+                path = f"content/songs/{output_path}"
 
                 # If path does not end with slash, add one to it
                 if path[-1] != '/':
@@ -155,7 +153,7 @@ if __name__ == "__main__":
         while True:
             # Creates path from potential name of .txt file
             txt_name = input(f"What is your desired txt file's name (Exclude .txt)? ")
-            txt_path = directory + "/content/url_txts/" + txt_name + ".txt"
+            txt_path = os.path.dirname(__file__) + "/content/url_txts/" + txt_name + ".txt"
 
             # Validates the existence (or lack thereof) of .txt file
             if not os.path.isfile(txt_path):
@@ -187,7 +185,7 @@ if __name__ == "__main__":
             # Cleans up new path, if custom path exists
             if new_path != None:
                 # Adds default folder path of content/songs/ to beginning of path
-                new_path = f"{directory}/content/songs/{new_path}"
+                new_path = f"content/songs/{new_path}"
 
                 # If path does not end with slash, add one to it
                 if new_path[-1] != '/':
@@ -251,7 +249,7 @@ if __name__ == "__main__":
 
             # Overwrites output path to Artist/Album if auto sorting is turned on and custom path not desired in Method 2
             if AUTO_SORT_SONGS and desired_path == None:
-                path_start = f"{directory}/content/songs/{data['artist']}/"
+                path_start = f"content/songs/{data['artist']}/"
                 if data["album"] != "":
                     path = f"{path_start}{data['album']}/"
                 else:  # If no metadata is found in YouTube video, place in UNORGANIZED folder under artist's name
