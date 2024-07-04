@@ -264,7 +264,14 @@ if __name__ == "__main__":
 
             # Attempts to download song using pytube, if it fails, skips over it
             if download_song(song_url, path, file_name) == False:
+                # Removes song that failed to download
+                os.remove(f"{directory}/{path}{file_name}.mp3")
+
+                print("ERROR Resolved!")
+
+                # Ensures the rest of the songs still have their correct track number
                 track_num += 1
+
                 continue
             
             # Writes metadata onto MP3s
