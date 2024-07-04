@@ -6,7 +6,7 @@ NOTE: You must have Python3 and pip already installed before following these ste
 
 1) Download .zip
 2) Extract it to desired path
-3) Open OS' terminal the terminal inside IDE of choice
+3) Open OS's terminal or the terminal inside IDE of choice
 4) cd into PlaylistGrabber folder
 5) run "python -m main"
 
