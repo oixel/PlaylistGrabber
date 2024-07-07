@@ -16,6 +16,10 @@ class DataHandler:
     ARTIST_MARKER = '","subtitle":"'
     ALBUM_MARKER = '"secondarySubtitle":{"content":"'
 
+    # When SET_COVER_ART is True, embeds songs with no found covers with this image instead
+    # NOTE: Set to None to leave songs with no founds covers blank
+    DEFAULT_COVER_SOURCE = 'https://i.ibb.co/DDKn0JH/starcat.jpg'
+
     def __init__(self, url) -> None:
         # Stores URL of YouTube video for usage in set_filler()
         self.url = url
@@ -67,11 +71,11 @@ class DataHandler:
         # Gets YouTube video's basic information utilizing pytube in downloader.py
         song = get_song(self.url)
 
-        # If no album cover art is available, set cover to custom made starcat filler image
+        # If no album cover art is available, set cover to DEFAULT_COVER_SOURCE's image
         if self.metadata["cover_src"] == None:
-            self.metadata["cover_src"] = "https://i.ibb.co/DDKn0JH/starcat.jpg"
+            self.metadata["cover_src"] = self.DEFAULT_COVER_SOURCE
 
-            # NOTE: Uncomment to utilize video's thumbnail instead of awesome starcat image
+            # NOTE: Uncomment to utilize video's thumbnail instead
             # self.metadata["cover_src"] = song.thumbnail_url
         
         # If no song title is available, set title to YouTube video's title
@@ -145,7 +149,7 @@ class DataHandler:
         audio.save(f"{path}{file_name}.mp3")
 
         # Only embeds album covers if it desired
-        if set_cover_art:
+        if set_cover_art and self.metadata['cover_src'] != None:
             # Reads and store byte data for album cover image from image source's URL
             cont = requests.get(self.metadata['cover_src']).content
             image_bytes = BytesIO(cont).read()
