@@ -8,7 +8,8 @@ NOTE: You must have Python3 and pip already installed before following these ste
 2) Extract it to desired path
 3) Open OS's terminal or the terminal inside IDE of choice
 4) cd into PlaylistGrabber folder
-5) run "python -m main"
+5) run "pip install -r requirements.txt"
+6) run "python -m main"
 
 You are now all set up!
 
@@ -19,19 +20,37 @@ When you attempt to download anything, you will receive a message saying:
 
 If you desire to download songs marked as explicit by YouTube, you must log in to an account with age registrictions turned off. Otherwise, explicit songs will be skipped by downloader
 
-# Methods of Input & Settings
-There are two ways to input YouTube playlist URLs and both may be useful in different scenarios. Along with this,
+# Methods of Input
+There are two ways to input YouTube playlist URLs and both may be useful in different scenarios.
 
 1) Input each URL individually
 2) Read the URLs stored in a .txt file
 
+By default, songs in playlists with mostly full metadata (artist and album) are downloaded to a path that follows the format of "content/songs/Artist Name/Album Name/". However, this varies depending on what metadata is available under the video. If no artist's name is found, it substitutes with the video uploader's name instead. If no album name is found, there is no alternative data to work with, so it instead gets placed into a "UNORGANIZED" folder under the artist's (or uploader's) name.
+
+Of course these paths can be overriden; however, the process of overriding depends on whether Method 1 or 2 is being used.
+
 ### Method 1: Inputting each URL individually
-This method is better utilized when installing playlists once without concern of reusing the link again in the future. It skips the work of creating a .txt file and simply installs the playlists inputted instantly. 
+This method is better utilized when installing playlists once without concern of reusing the link again in the future. It skips the work of creating a .txt file and simply installs the playlists inputted instantly.
 
-#### Settings
-By default, manually inputting playlists on PlaylistGrabber organizes the downloaded songs in the same way as Method 2. However, changing the constants at the top of main.py can grant you more freedom in the outputs and output locations.
+Output paths can be overrided by changing the settings of the following constants in main.py:
 
-These settings are as follows:
+__NOTE__: Keeping AUTO_SORT_SONGS as True while using custom data will place songs in "content/songs/Custom Artist Name/ Custom Album Name/".
+
+* AUTO_SORT_SONGS = (Default = True)
+    - Turning this off will result in your desired output path being asked after inputting each URL.
+* USE_CUSTOM_ARTIST = (Default = False)
+    - Allows input at start that overwrites any artist or uploader names that are found.
+* USE_CUSTOM_ALBUM = (Default = False)
+    - Allows input at start that overwrites any found album names.
+
+### Method 2: Reading from .txt
+TO BE TYPED UP SOON...
+
+# Additional Settings
+Futher changes are able to be made to how the songs themselves are downloaded. Changing these settings alters the downloads regardless of what method is used to install the songs.
+
+Universal Settings:
 * SET_TRACK_NUMBERS (Default = True)
     - Writes spot of downloaded song in playlsit as track number in metadata.
 * SET_NUM_IN_FILENAME = (Default = True)
@@ -39,9 +58,6 @@ These settings are as follows:
 * SET_COVER_ART = (Default = True)
     - If a image is provided in song's YouTube description, embeds it as the song's cover art.
     - __NOTE__: If no song is found, it will instead embed [this silly cat I drew.](https://i.ibb.co/DDKn0JH/starcat.jpg)
-      - If you desire the default image to be something different, change the URL of DEFAULT_COVER_SOURCE in data_handler.py.
-      - Alternatively, if you desire songs with no found cover to be left blank, set DEFAULT_COVER_SOURCE to None.
-* AUTO_SORT_SONGS = (Default = True)
-* USE_CUSTOM_ARTIST = (Default = False)
-* USE_CUSTOM_ALBUM = (Default = False))
-
+      - If you wish to use a different default image, change the URL of DEFAULT_COVER_SOURCE in data_handler.py (Recommended to be 512x512 pixels).
+      - Alternatively, if you desire songs with no found cover to be left blank, set DEFAULT_COVER_SOURCE in data_handler.py to None.
+     
