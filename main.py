@@ -262,10 +262,21 @@ if __name__ == "__main__":
             # Ensures that path for song is allowed
             path = rename(path, True)
 
+            current_song_path = f"{directory}/{path}{file_name}.mp3"
+
+            # Skips any songs that are already downloaded
+            if os.path.isfile(current_song_path):
+                print(f"SONG ALREADY DOWNLOADED - Skipping...\n")
+                track_num += 1
+                continue
+
             # Attempts to download song using pytube, if it fails, skips over it
             if download_song(song_url, directory, path, file_name) == False:
+                print(f"[X] {file_name} failed to download.\n")
+
                 # Removes song that failed to download
-                os.remove(f"{directory}/{path}{file_name}.mp3")
+                if os.path.isfile(current_song_path):
+                    os.remove(current_song_path)
 
                 # Ensures the rest of the songs still have their correct track number
                 track_num += 1
