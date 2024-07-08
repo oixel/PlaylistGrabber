@@ -1,4 +1,4 @@
-from pytubefix import YouTube
+from pytube import YouTube
 from pydub import AudioSegment
 
 # Utilizes pydubs' AudioSegment class to convert fake MP3 downloaded from YouTube audio to recognizable MP3 file
@@ -13,7 +13,7 @@ def download_song(url, directory, path, song_name) -> bool:
 
         # Downloads audio of video as fake MP3 file
         stream = youtube.streams.get_audio_only()
-        stream.download(f"{path}", f"{song_name}", mp3=True)
+        stream.download(f"{path}", f"{song_name}.mp3")
 
         # Converts fake MP3 from video audio to proper MP3 file
         convert_to_proper_mp3(f"{directory}/{path}{song_name}.mp3")
