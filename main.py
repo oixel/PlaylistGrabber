@@ -84,6 +84,10 @@ if __name__ == "__main__":
     # Only filled if USE_CUSTOM_ALBUM is set to True
     custom_albums = []
 
+    # Keeps track of total songs and failed downloads to output at end
+    total_songs = 0
+    total_failed = 0
+
     # If manually inputting each playlist URL, get every playlist URL
     if choice == 1:
         # Fills playlist_paths with URLs and output paths
@@ -227,6 +231,9 @@ if __name__ == "__main__":
         # Only used if set_track_number is set to True
         track_num = 1
 
+        # Keeps track of how many songs failed to download
+        failed_songs = 0
+
         # Loops through URLs in playlist--downloading and writing metadata for each
         for song_url in playlist.video_urls:
             # Grabs data from YouTube video and stores it in DataGrabber object
@@ -266,7 +273,7 @@ if __name__ == "__main__":
 
             # Skips any songs that are already downloaded
             if os.path.isfile(current_song_path):
-                print(f"SONG ALREADY DOWNLOADED - Skipping...\n")
+                print(f"[Song Already Downloaded] - Skipping...\n")
                 track_num += 1
                 continue
 
@@ -281,6 +288,9 @@ if __name__ == "__main__":
                 # Ensures the rest of the songs still have their correct track number
                 track_num += 1
 
+                # Increment count of failed songs
+                failed_songs += 1
+
                 continue
             
             # Writes metadata onto MP3s
@@ -291,9 +301,14 @@ if __name__ == "__main__":
             
             print(f"{file_name} by {data['artist']} downloaded and written!\n")
 
-        print(f"All songs in {playlist.title} have been downloaded!\n------------\n")
+        playlist_length = len(playlist.video_urls)
+        print(f"{playlist_length - failed_songs}/{playlist_length} songs in {playlist.title} downloaded!\n------------\n")
+
+        total_songs += playlist_length
+        total_failed += failed_songs
 
         # Increment index of custom artist/album
         custom_index += 1
 
-    print("ALL playlists are done downloading! Enjoy your music! :)\n")
+    # Prints final results of downloads
+    print(f"{total_songs - total_failed}/{total_songs} downloaded! Enjoy your music! :)\n")
