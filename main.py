@@ -1,7 +1,7 @@
 import data_handler as DH
 from downloader import *
 from renamer import *
-from pytube import Playlist
+from pytubefix import Playlist
 import os
 
 # Default: True -- Writes track number in MP3's metadata
