@@ -36,7 +36,7 @@ Of course, these paths can be overridden; however, the process of overriding dep
 ### Method 1: Inputting each URL individually
 Output paths can be overridden by changing the settings of the following constants in main.py:
 
-__NOTE__: Keeping AUTO_SORT_SONGS as True while using custom data will place songs in "content/songs/Custom Artist Name/ Custom Album Name/".
+__NOTE__: Keeping AUTO_SORT_SONGS as True while using custom data will place songs in "content/songs/Custom Artist Name/Custom Album Name/".
 
 * AUTO_SORT_SONGS = (Default = True)
     - Turning this off will result in your desired output path being asked after inputting each URL.
@@ -46,7 +46,15 @@ __NOTE__: Keeping AUTO_SORT_SONGS as True while using custom data will place son
     - Asks for an additional input after URL input that overwrites any album names that are found.
 
 ### Method 2: Reading from .txt
-TO BE TYPED UP SOON...
+Reading from a text file makes downloading playlists a repeatable and streamlined process.
+
+Much like Method 1, reading from a text file has custom keywords that can be used to override the artist's name, album, and output path by placing ARTIST[Desired Name], ALBUM[Desired Name], or PATH[File Path] in the line above the playlist's URL.
+
+Additionally, END can be written on a separate line to end the downloading process at that line.
+
+You can check "content/artists/" for some examples. The lines starting with '#' are comments for myself. You can also write comments without the hashtag, but I prefer to leave it for personal styling.
+
+__NOTE__: The custom keywords do not need to be separated by "::". This is another personal styling preference. As long as the keyword is fully capitalized and the input is surrounded in square brackets, the custom data will be applied.
 
 # Additional Settings
 Further changes can be made to how the songs themselves are downloaded. Changing these settings alters the downloads regardless of the method used to install the songs.
