@@ -4,6 +4,7 @@ A set of Python scripts that takes a YouTube playlist link of songs, downloads t
 # Getting Started
 NOTE: You must have Python3 and pip already installed before following these steps.
 
+WARNING: MacOS devices may require different set up steps (I am unable to test since I do not own a Mac)
 1) Download .zip
 2) Extract it to your desired path
 3) Open your OS's terminal or the terminal inside IDE of choice
