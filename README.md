@@ -69,4 +69,3 @@ Universal Settings:
     - __NOTE__: If no cover source is found, it will instead embed [this silly cat](https://i.ibb.co/DDKn0JH/starcat.jpg) I drew.
       - If you wish to use a different default image, change the URL of DEFAULT_COVER_SOURCE in data_handler.py (Recommended to be 512x512 pixels).
       - Alternatively, if you desire songs with no found cover to be left blank, set DEFAULT_COVER_SOURCE in data_handler.py to None.
-     
