@@ -28,6 +28,10 @@ https://www.youtube.com/playlist?list=PL2fTbjKYTzKeOqN4zBil78PVf9AA7D8zq
 ARTIST[Kendrick Lamar]
 https://www.youtube.com/playlist?list=OLAK5uy_mdeH-JtTLsVGDionNbEvJGtQw--uolZy8
 
+# GNX
+ARTIST[Kendrick Lamar] :: ALBUM[GNX]
+https://www.youtube.com/playlist?list=PL2fTbjKYTzKfMRG6gGY8J-tLowwfALubR
+
 # Singles
 ARTIST[Kendrick Lamar] :: ALBUM[Kendrick - Singles] :: PATH[Kendrick Lamar/Singles]
 https://www.youtube.com/playlist?list=PL2fTbjKYTzKc2GZ3CofhbQAYc9kn1JqgB
