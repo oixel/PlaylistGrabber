@@ -22,9 +22,10 @@ AUTO_SORT_SONGS = True
 
 # Default: False -- Allows for custom artist and album to be embeded into metadata--overwriting found metadata
 # NOTE: only affects Method 1 of inputting playlists URLs.
-# NOTE: to set custom artist / album write "ARTIST[text]" and/or "ALBUM[text]" in the line above the playlist's URL
+# NOTE: to set custom artist / album / cover write "ARTIST[text]", "ALBUM[text]", or "COVER[text]" in the line above the playlist's URL
 USE_CUSTOM_ARTIST = False
 USE_CUSTOM_ALBUM = False
+USE_CUSTOM_COVER_ART = False
 
 # Returns string in between two markers (if it exists) -- used to find ARTIST[] and ALBUM[] in .txt files
 def get_substr(start_marker : str, end_marker : str, line : str) -> str | None:
@@ -84,6 +85,9 @@ if __name__ == "__main__":
     # Only filled if USE_CUSTOM_ALBUM is set to True
     custom_albums = []
 
+    # Only filled if USE_CUSTOM_COVER_ART is set to True
+    custom_cover_art = []
+
     # Keeps track of total songs and failed downloads to output at end
     total_songs = 0
     total_failed = 0
@@ -136,6 +140,18 @@ if __name__ == "__main__":
                     custom_albums.append(None)
             else:  # Appends None for all values in custom_albums if not using custom albums
                 custom_albums.append(None)
+
+            # Gets custom cover art for current playlist if custom cover is enabled
+            if USE_CUSTOM_COVER_ART:
+                cover_art = input(f"What is the IMAGE SOURCE of the custom COVER ART for playlist {i + 1}? (Leave blank for regular metadata) ")
+                
+                # Allows custom artist to be skipped for individual playlists by inputting nothing
+                if cover_art != "":
+                    custom_cover_art.append(cover_art)
+                else:
+                    custom_cover_art.append(None)
+            else:  # Appends None for all values in custom_cover_art if not using custom covers
+                custom_cover_art.append(None)
 
             # Only asks for custom output path if auto sorting songs is turned off
             if not AUTO_SORT_SONGS:
@@ -214,6 +230,10 @@ if __name__ == "__main__":
             # Stores custom album (to overwrite metadata) if one is written in line above playlist URL
             new_album = get_substr("ALBUM[", "]", lines[i - 1])
             custom_albums.append(new_album)
+
+            # Stores custom cover art (to overwrite metadata) if one is written in line above playlist URL
+            new_cover_art = get_substr("COVER[", "]", lines[i - 1])
+            custom_cover_art.append(new_cover_art)
     
     # Keeps track of what custom artist/album to embed in metadata for songs in current playlist
     custom_index = 0
@@ -242,6 +262,7 @@ if __name__ == "__main__":
             # Attempts to overwrite metadata using the values stored in the custom lists of custom values
             dh.overwrite_artist(custom_artists[custom_index])
             dh.overwrite_album(custom_albums[custom_index])
+            dh.overwrite_cover_art(custom_cover_art[custom_index])
             
             # Stores filled out and (potentially) overwritten metadata dictionary into a dictionary
             data = dh.get_data()

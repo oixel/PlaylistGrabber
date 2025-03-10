@@ -178,3 +178,8 @@ class DataHandler:
     def overwrite_album(self, album) -> None:
         if album != None:
             self.metadata['album'] = album
+
+    # If custom cover art is desired for current playlist, overwrite the currently stored cover art for this song
+    def overwrite_cover_art(self, cover_src) -> None:
+        if cover_src != None:
+            self.metadata['cover_src'] = cover_src
