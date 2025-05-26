@@ -188,7 +188,7 @@ if __name__ == "__main__":
             break
         
         # Creates a list of all lines in .txt file
-        url_txt = open(txt_path, "r")
+        url_txt = open(txt_path, "r", encoding="utf8")
         lines = url_txt.readlines()
 
         # Loops through every line in .txt file and stores the working playlist URLs into playlist_paths
